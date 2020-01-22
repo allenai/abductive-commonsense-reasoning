@@ -2,7 +2,7 @@ import argparse
 import json
 import torch
 
-from transformers import BertTokenizer, BertConfig
+from transformers import BertTokenizer, BertConfig, BertForMultipleChoice
 
 from anli.data_processors import AnliExample, mc_examples_to_data_loader
 from anli.run_anli import get_data_processor, model_choice_map
@@ -20,7 +20,7 @@ def load_anli_model(model_name, saved_model_dir, device):
         finetuning_task="anli"
     )
 
-    model = model_choice_map['BertForMultipleChoice'].from_pretrained(
+    model = BertForMultipleChoice.from_pretrained(
         saved_model_dir,
         from_tf=bool('.ckpt' in model_name),
         config=config
@@ -40,14 +40,13 @@ def _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device):
                            label=None
                            )
     data_loader = mc_examples_to_data_loader([instance], tokenizer, 68, False, 1, is_predict=True, verbose=False)
-    for input_ids, input_mask, segment_ids, label_ids in data_loader:
+    for input_ids, input_mask, segment_ids in data_loader:
         input_ids = input_ids.to(device)
         input_mask = input_mask.to(device)
         segment_ids = segment_ids.to(device)
-        label_ids = label_ids.to(device)
 
-        model_output = model(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask, labels=label_ids)
-        logits = model_output[1]
+        model_output = model(input_ids=input_ids, token_type_ids=segment_ids, attention_mask=input_mask)
+        logits = model_output[0]
 
         logits = logits.detach().cpu().numpy()
 
@@ -55,12 +54,12 @@ def _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device):
     return answer
 
 
-def main(args, interactive=False):
+def main(args):
     device = torch.device(args.gpu_id if torch.cuda.is_available() else "cpu")
 
     data_processor, tokenizer, model = load_anli_model(args.model_name, args.saved_model_dir, device)
 
-    if interactive:
+    if args.interactive:
         while True:
             obs1 = input("Observation 1 >>> ")
             obs2 = input("Observation 2 >>> ")
@@ -90,6 +89,7 @@ if __name__ == '__main__':
                         default=None,
                         required=True)
     parser.add_argument('--gpu_id', type=int, default=0)
+    parser.add_argument('--interactive', action='store_true')
 
     args = parser.parse_args()
     print('====Input Arguments====')
