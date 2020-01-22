@@ -32,7 +32,7 @@ def load_anli_model(model_name, saved_model_dir, device):
     return data_processor, tokenizer, model
 
 
-def _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device):
+def _predict(tokenizer, model, obs1, obs2, hyp1, hyp2, device):
     instance = AnliExample(example_id="demo-1",
                            beginning=obs1,
                            middle_options=[hyp1, hyp2],
@@ -57,7 +57,7 @@ def _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device):
 def main(args):
     device = torch.device(args.gpu_id if torch.cuda.is_available() else "cpu")
 
-    data_processor, tokenizer, model = load_anli_model(args.model_name, args.saved_model_dir, device)
+    _, tokenizer, model = load_anli_model(args.model_name, args.saved_model_dir, device)
 
     if args.interactive:
         while True:
@@ -66,7 +66,7 @@ def main(args):
             hyp1 = input("Hypothesis 1 >>> ")
             hyp2 = input("Hypothesis 2 >>> ")
 
-            prediction = _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device)
+            prediction = _predict(tokenizer, model, obs1, obs2, hyp1, hyp2, device)
 
             if prediction == 0:
                 print("[Answer] Hyptothesis 1: {}".format(hyp1))
