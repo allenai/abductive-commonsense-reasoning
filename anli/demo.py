@@ -9,22 +9,20 @@ from anli.run_anli import get_data_processor, model_choice_map
 import numpy as np
 
 
-def load_anli_model(model_name_or_path, device):
+def load_anli_model(model_name, saved_model_dir, device):
     data_processor = get_data_processor("anli")
-    tokenizer = BertTokenizer.from_pretrained(model_name_or_path, do_lower_case=True)
-
-
+    tokenizer = BertTokenizer.from_pretrained(model_name, do_lower_case=True)
 
     # Pretrained Model
     config = BertConfig.from_pretrained(
-        model_name_or_path,
+        model_name,
         num_labels=len(data_processor.get_labels()),
         finetuning_task="anli"
     )
 
     model = model_choice_map['BertForMultipleChoice'].from_pretrained(
-        model_name_or_path,
-        from_tf=bool('.ckpt' in model_name_or_path),
+        saved_model_dir,
+        from_tf=bool('.ckpt' in model_name),
         config=config
     )
 
@@ -82,10 +80,15 @@ if __name__ == '__main__':
         description='Demo for a finetuned ANLI model.')
 
     # Required Parameters
-    parser.add_argument('--model_name_or_path',
+    parser.add_argument('--model_name',
                         type=str,
-                        help="Bert pre-trained model selected for finetuned",
-                        default=None)
+                        help="Bert pre-trained model selected for finetuning.",
+                        default="bert-large-uncased")
+    parser.add_argument('--saved_model_dir',
+                        type=str,
+                        help="Saved finetuned model dir.",
+                        default=None,
+                        required=True)
     parser.add_argument('--gpu_id', type=int, default=0)
 
     args = parser.parse_args()
