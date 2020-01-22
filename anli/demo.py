@@ -57,7 +57,7 @@ def _predict(data_processor, tokenizer, model, obs1, obs2, hyp1, hyp2, device):
     return answer
 
 
-def main(args, model_path, interactive=False):
+def main(args, interactive=False):
     device = torch.device(args.gpu_id if torch.cuda.is_available() else "cpu")
 
     data_processor, tokenizer, model = load_anli_model(args.model_name_or_path, device)
