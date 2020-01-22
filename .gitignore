@@ -133,3 +133,4 @@ dmypy.json
 comet-model/
 comet-vocab/
 data/
+models/
