@@ -82,40 +82,10 @@ if __name__ == '__main__':
         description='Demo for a finetuned ANLI model.')
 
     # Required Parameters
-    parser.add_argument('--data_dir', type=str, help='Location of data', default=None)
-    parser.add_argument('--task_name', type=str, help='Task Name. Currently supported: anli / '
-                                                      'wsc', default=None)
     parser.add_argument('--model_name_or_path',
                         type=str,
                         help="Bert pre-trained model selected for finetuned",
                         default=None)
-    parser.add_argument('--output_dir',
-                        type=str,
-                        help="Output directory to save model",
-                        default=None)
-    parser.add_argument('--mode', type=str, default=None)
-    parser.add_argument('--finetuning_model', type=str, default='BertForMultipleChoice')
-    parser.add_argument('--eval_split', type=str, default="dev")
-    parser.add_argument('--run_on_test', action='store_true')
-
-    parser.add_argument('--input_file', action='store_true')
-    parser.add_argument('--predict_input_file', default=None)
-    parser.add_argument('--predict_output_file', default=None)
-    parser.add_argument('--metrics_out_file', default="metrics.json")
-
-    # Hyperparams
-    parser.add_argument('--lr', type=float, help="Learning rate", default=1e-5)
-    parser.add_argument('--batch_size', type=int, help="Batch size", default=4)
-    parser.add_argument('--epochs', type=int, help="Num epochs", default=3)
-    parser.add_argument('--training_data_fraction', type=float, default=1.0)
-
-    # Other parameters
-    parser.add_argument("--max_seq_length",
-                        default=64,
-                        type=int,
-                        help="The maximum total input sequence length after WordPiece tokenization. \n"
-                             "Sequences longer than this will be truncated, and sequences shorter \n"
-                             "than this will be padded.")
     parser.add_argument('--gpu_id', type=int, default=0)
 
     args = parser.parse_args()
