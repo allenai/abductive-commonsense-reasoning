@@ -17,6 +17,20 @@ Public repository associated with [Abductive Commonsense Reasoning, ICLR 2020](h
     sh get-data.sh
     ```
 
+# Download Trained Model
+```
+wget https://storage.googleapis.com/ai2-mosaic/public/abductive-commonsense-reasoning-iclr2020/models/anli/bert-ft-lr1e-5-batch8-epoch4.tar.gz
+
+mkdir -p models
+
+tar -xvzf bert-ft-lr1e-5-batch8-epoch4.tar.gz -C models/
+```
+
+# Interactive Demo
+```
+python anli/demo.py --saved_model_dir models/bert-ft-lr1e-5-batch8-epoch4/ --gpu_id 0 --interactive
+```
+
 ## [Abductive Inference](anli/README.md)
 ## Abductive Generation (Coming soon)
 
