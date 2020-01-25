@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea/
+
+comet-model/
+comet-vocab/
+data/
+models/

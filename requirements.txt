@@ -1,0 +1,26 @@
+# data science and numerical computing
+numpy
+scipy
+scikit-learn
+
+spacy
+
+tensorboardX
+regex
+
+tensorflow
+ftfy==5.1
+tensorboardX
+tqdm
+pandas
+ipython
+
+nltk
+
+transformers
+
+allennlp
+
+torchvision
+
+OpenNMT-py
