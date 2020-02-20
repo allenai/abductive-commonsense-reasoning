@@ -24,3 +24,5 @@ allennlp
 torchvision
 
 OpenNMT-py
+
+-e git+ssh://git@github.com/allenai/comet.git@package#egg=comet
