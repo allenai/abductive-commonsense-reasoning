@@ -10,7 +10,7 @@ from pytorch_transformers.modeling_bert import BertLayerNorm as LayerNorm
 from pytorch_transformers.modeling_gpt2 import Block
 from torch.nn import Parameter
 
-from baselines.generative.sotw import SymmetricAttentionSOTW
+from anlg.sotw import SymmetricAttentionSOTW
 
 
 class GPT2CometAttentiveModel(GPT2PreTrainedModel):
