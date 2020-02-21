@@ -5,9 +5,9 @@ import torch.nn as nn
 from comet.data.atomic import all_categories
 from comet.models.utils import prepare_position_embeddings
 from onmt.modules import GlobalAttention
-from pytorch_transformers import GPT2PreTrainedModel
-from pytorch_transformers.modeling_bert import BertLayerNorm as LayerNorm
-from pytorch_transformers.modeling_gpt2 import Block
+from transformers import GPT2PreTrainedModel
+from transformers.modeling_bert import BertLayerNorm as LayerNorm
+from transformers.modeling_gpt2 import Block
 from torch.nn import Parameter
 
 from anlg.sotw import SymmetricAttentionSOTW
