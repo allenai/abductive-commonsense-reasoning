@@ -51,6 +51,9 @@ class AnliGpt2Tokenizer(GPT2Tokenizer):
 
 
 class AnliCometGpt2Tokenizer(GPT2Tokenizer):
+    def add_special_tokens_single_sentence(self, token_ids):
+        pass
+
     def __init__(self,
                  vocab_file,
                  merges_file,
