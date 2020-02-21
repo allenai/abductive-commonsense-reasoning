@@ -5,7 +5,7 @@ import os
 from abc import ABC
 
 import torch
-from transformers import BertTokenizer
+from pytorch_transformers import BertTokenizer
 from torch.utils.data import TensorDataset, SequentialSampler, DataLoader, RandomSampler
 
 from utils.file_utils import read_lines, read_jsonl_lines

@@ -37,12 +37,13 @@ from torch.utils.data.distributed import DistributedSampler
 from tensorboardX import SummaryWriter
 from tqdm import tqdm, trange
 
-from transformers import (WEIGHTS_NAME, AdamW,
+from pytorch_transformers import (WEIGHTS_NAME, AdamW,
                           BertConfig, BertForMaskedLM, BertTokenizer,
                           GPT2Config, GPT2LMHeadModel, GPT2Tokenizer,
                           OpenAIGPTConfig, OpenAIGPTLMHeadModel, OpenAIGPTTokenizer,
                           RobertaConfig, RobertaForMaskedLM, RobertaTokenizer,
-                          get_linear_schedule_with_warmup)
+                                  WarmupLinearSchedule
+                          )
 
 from anlg.models import GPT2CometLMHeadModel, GPT2SotwAttentiveModel, \
     GPT2SotwLMHeadModel
@@ -389,7 +390,7 @@ def train(args, train_dataset, model, tokenizer, comet_text_encoder=None, comet_
          'weight_decay': 0.0}
     ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_steps, num_training_steps=t_total)
+    scheduler = WarmupLinearSchedule(optimizer, num_warmup_steps=args.warmup_steps, num_training_steps=t_total)
     if args.fp16:
         try:
             from apex import amp

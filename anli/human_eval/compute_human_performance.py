@@ -30,7 +30,12 @@ def main(args):
 
     stories = []
     correct = 0
+    done = set()
     for r in records:
+        if r['Input.story_id'] in done:
+            continue
+        done.add(r['Input.story_id'])
+
         assert len(per_story_votes[r['Input.story_id']]) == 3
 
         majority_vote = Counter(per_story_votes[r['Input.story_id']]).most_common(1)[0][0]
@@ -51,6 +56,7 @@ def main(args):
             correct += 1
 
     print("Human performance = {}".format(correct / len(stories)))
+    print("No. of storeies = {}".format(len(stories)))
 
     write_items([json.dumps(r) for r in stories], output_file)
 

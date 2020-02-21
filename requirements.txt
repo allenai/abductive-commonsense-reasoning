@@ -17,7 +17,7 @@ ipython
 
 nltk
 
-transformers
+-e git+https://github.com/csbhagav/pytorch-transformers@generative-finetuning#egg=pytorch-transformers
 
 allennlp
 
