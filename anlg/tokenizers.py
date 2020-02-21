@@ -1,5 +1,5 @@
 from comet.data.atomic import all_categories
-from pytorch_transformers import GPT2Tokenizer
+from transformers import GPT2Tokenizer
 
 
 class AnliGpt2Tokenizer(GPT2Tokenizer):
