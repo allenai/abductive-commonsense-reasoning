@@ -390,7 +390,7 @@ def train(args, train_dataset, model, tokenizer, comet_text_encoder=None, comet_
          'weight_decay': 0.0}
     ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, eps=args.adam_epsilon)
-    scheduler = WarmupLinearSchedule(optimizer, num_warmup_steps=args.warmup_steps, num_training_steps=t_total)
+    scheduler = WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
     if args.fp16:
         try:
             from apex import amp
