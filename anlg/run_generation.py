@@ -37,10 +37,10 @@ from pytorch_transformers import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer
 from pytorch_transformers import XLNetLMHeadModel, XLNetTokenizer
 from pytorch_transformers import TransfoXLLMHeadModel, TransfoXLTokenizer
 
-from baselines.generative.model import GPT2CometLMHeadModel, GPT2SotwLMHeadModel
-from baselines.generative.run_lm_finetuning import record_to_text_tokens_with_comet_pred, \
+from anlg.models import GPT2CometLMHeadModel, GPT2SotwLMHeadModel
+from anlg.run_lm_finetuning import record_to_text_tokens_with_comet_pred, \
     anli_record_to_gpt_prompt
-from baselines.generative.tokenizers import AnliGpt2Tokenizer, AnliCometGpt2Tokenizer
+from anlg.tokenizers import AnliGpt2Tokenizer, AnliCometGpt2Tokenizer
 from utils.file_utils import read_lines, write_items, read_jsonl_lines
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
