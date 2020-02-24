@@ -15,3 +15,7 @@ rm data/anlg.zip
 wget https://storage.googleapis.com/ai2-mosaic/public/comet/atomic_pretrained_model.th -P comet-model/ -nc
 wget https://storage.googleapis.com/ai2-mosaic/public/comet/vocabulary/encoder_bpe_40000.json -P comet-vocab/ -nc
 wget https://storage.googleapis.com/ai2-mosaic/public/comet/vocabulary/vocab_40000.bpe -P comet-vocab/ -nc
+
+wget https://storage.googleapis.com/ai2-mosaic/public/abductive-commonsense-reasoning-iclr2020/models.zip -P . -nc
+unzip models.zip -d .
+rm models.zip
