@@ -37,7 +37,7 @@ from pytorch_transformers import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer
 from pytorch_transformers import XLNetLMHeadModel, XLNetTokenizer
 from pytorch_transformers import TransfoXLLMHeadModel, TransfoXLTokenizer
 
-from anlg.models import GPT2CometLMHeadModel, GPT2SotwLMHeadModel
+from anlg.models import GPT2CometLMHeadModel,
 from anlg.run_lm_finetuning import record_to_text_tokens_with_comet_pred, \
     anli_record_to_gpt_prompt
 from anlg.tokenizers import AnliGpt2Tokenizer, AnliCometGpt2Tokenizer
