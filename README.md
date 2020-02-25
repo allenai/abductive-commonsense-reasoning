@@ -31,8 +31,9 @@ tar -xvzf bert-ft-lr1e-5-batch8-epoch4.tar.gz -C models/
 python anli/demo.py --saved_model_dir models/bert-ft-lr1e-5-batch8-epoch4/ --gpu_id 0 --interactive
 ```
 
-## [Abductive Inference](anli/README.md)
-## [Abductive Generation](anlg/README.md)
+# Tasks
+1. [Abductive Inference](anli/README.md)
+2. [Abductive Generation](anlg/README.md)
 
 # References
 ```
