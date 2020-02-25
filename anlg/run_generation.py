@@ -192,8 +192,6 @@ def main():
     parser.add_argument("--restrict_comet", default=False, type=bool,
                         help="Restrict comet features to only o1's effect and o2's causes")
     parser.add_argument("--num_samples", default=1, type=int, help="No. of samples to obtain.")
-    parser.add_argument("--sotw", default=False, type=bool,
-                        help="Use the state of the world model.")
 
     args = parser.parse_args()
 
@@ -279,7 +277,7 @@ def main():
                 comet_event_inputs = None
                 comet_attention_masks = None
 
-                if args.model_type == "gpt2_for_anli_comet" or args.model_type == "gpt2_for_anli_sotw":
+                if args.model_type == "gpt2_for_anli_comet":
                     input_text_tokens, comet_event_inputs, comet_attention_masks = \
                         record_to_text_tokens_with_comet_pred(
                             tokenizer=tokenizer,
@@ -288,8 +286,7 @@ def main():
                             comet_as_text=args.comet_as_text,
                             include_comet=args.include_comet,
                             comet_text_encoder=comet_text_encoder,
-                            restrict_comet=args.restrict_comet,
-                            sotw=args.sotw
+                            restrict_comet=args.restrict_comet
                         )
                 elif args.model_type == "gpt2_for_anli":
                     input_text_tokens = anli_record_to_gpt_prompt(tokenizer=tokenizer, record=record, is_eval=True)
