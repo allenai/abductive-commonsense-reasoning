@@ -44,6 +44,8 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+logging.getLogger("pytorch_transformers.tokenization_utils").setLevel(logging.CRITICAL)
+
 MAX_LENGTH = int(10000)  # Hardcoded max length to avoid infinite loop
 
 ALL_MODELS = sum((tuple(conf.pretrained_config_archive_map.keys()) for conf in
