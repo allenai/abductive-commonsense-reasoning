@@ -2,13 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import torch
 import torch.nn as nn
-from comet.data.atomic import all_categories
 from comet.models.utils import prepare_position_embeddings
-from onmt.modules import GlobalAttention
 from pytorch_transformers import GPT2PreTrainedModel
 from pytorch_transformers.modeling_bert import BertLayerNorm as LayerNorm
 from pytorch_transformers.modeling_gpt2 import Block
-from torch.nn import Parameter
 
 
 class GPT2CometAttentiveModel(GPT2PreTrainedModel):

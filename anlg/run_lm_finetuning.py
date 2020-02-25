@@ -45,8 +45,7 @@ from pytorch_transformers import (WEIGHTS_NAME, AdamW,
                                   WarmupLinearSchedule
                           )
 
-from anlg.models import GPT2CometLMHeadModel, GPT2SotwAttentiveModel, \
-    GPT2SotwLMHeadModel
+from anlg.models import GPT2CometLMHeadModel
 from anlg.tokenizers import AnliGpt2Tokenizer, AnliCometGpt2Tokenizer
 from utils.file_utils import read_jsonl_lines
 import comet.interactive.functions as interactive
@@ -59,8 +58,7 @@ MODEL_CLASSES = {
     'bert': (BertConfig, BertForMaskedLM, BertTokenizer),
     'roberta': (RobertaConfig, RobertaForMaskedLM, RobertaTokenizer),
     'gpt2_for_anli': (GPT2Config, GPT2CometLMHeadModel, AnliGpt2Tokenizer),
-    'gpt2_for_anli_comet': (GPT2Config, GPT2CometLMHeadModel, AnliCometGpt2Tokenizer),
-    'gpt2_for_anli_sotw': (GPT2Config, GPT2SotwLMHeadModel, AnliCometGpt2Tokenizer),
+    'gpt2_for_anli_comet': (GPT2Config, GPT2CometLMHeadModel, AnliCometGpt2Tokenizer)
 }
 
 restricted_comet_relations = {

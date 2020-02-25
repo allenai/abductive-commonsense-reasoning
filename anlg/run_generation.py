@@ -22,20 +22,16 @@ import argparse
 import json
 import logging
 
-import tqdm
 import comet.interactive.functions as interactive
-from tqdm import trange
-
+import numpy as np
 import torch
 import torch.nn.functional as F
-import numpy as np
-
+import tqdm
 from pytorch_transformers import GPT2Config, OpenAIGPTConfig, XLNetConfig, TransfoXLConfig
-
 from pytorch_transformers import GPT2LMHeadModel, GPT2Tokenizer
 from pytorch_transformers import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer
-from pytorch_transformers import XLNetLMHeadModel, XLNetTokenizer
 from pytorch_transformers import TransfoXLLMHeadModel, TransfoXLTokenizer
+from pytorch_transformers import XLNetLMHeadModel, XLNetTokenizer
 
 from anlg.models import GPT2CometLMHeadModel
 from anlg.run_lm_finetuning import record_to_text_tokens_with_comet_pred, \
@@ -59,8 +55,7 @@ MODEL_CLASSES = {
     'xlnet': (XLNetLMHeadModel, XLNetTokenizer),
     'transfo-xl': (TransfoXLLMHeadModel, TransfoXLTokenizer),
     'gpt2_for_anli': (GPT2CometLMHeadModel, AnliGpt2Tokenizer),
-    'gpt2_for_anli_comet': (GPT2CometLMHeadModel, AnliCometGpt2Tokenizer),
-    'gpt2_for_anli_sotw': (GPT2SotwLMHeadModel, AnliCometGpt2Tokenizer),
+    'gpt2_for_anli_comet': (GPT2CometLMHeadModel, AnliCometGpt2Tokenizer)
 }
 
 # Padding text to help Transformer-XL and XLNet with short prompts as proposed by Aman Rusia
