@@ -22,7 +22,7 @@ import argparse
 import json
 import logging
 
-import comet.interactive.functions as interactive
+import interactive.functions as comet_interactive
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -211,16 +211,16 @@ def main():
     comet_text_encoder = None
     if args.include_comet and not args.comet_as_text:
         logging.info("Setting comet model")
-        opt, state_dict, vocab = interactive.load_model_file(args.comet_model_path)
+        opt, state_dict, vocab = comet_interactive.load_model_file(args.comet_model_path)
         # print(opt)
         comet_data_loader, comet_text_encoder = \
-            interactive.load_data("atomic", opt, vocab, args.comet_vocab_path)
+            comet_interactive.load_data("atomic", opt, vocab, args.comet_vocab_path)
 
         n_ctx = comet_data_loader.max_event + comet_data_loader.max_effect
         n_vocab = len(comet_text_encoder.encoder) + n_ctx
         if not torch.cuda.is_available():
-            interactive.set_compute_mode("cpu")
-        comet_model = interactive.make_model(opt, n_vocab, n_ctx, state_dict)
+            comet_interactive.set_compute_mode("cpu")
+        comet_model = comet_interactive.make_model(opt, n_vocab, n_ctx, state_dict)
         model.set_comet_model(comet_model)
         model.set_comet_encoder(comet_text_encoder)
 
