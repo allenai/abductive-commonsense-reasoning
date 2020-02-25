@@ -25,4 +25,4 @@ torchvision
 
 OpenNMT-py
 
--e git+ssh://git@github.com/allenai/comet.git@package#egg=comet
+-e git+ssh://git@github.com/allenai/comet-public.git@init-public-repo#egg=comet
