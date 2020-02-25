@@ -2,7 +2,7 @@ import argparse
 import json
 import torch
 
-from transformers import BertTokenizer, BertConfig, BertForMultipleChoice
+from pytorch_transformers import BertTokenizer, BertConfig, BertForMultipleChoice
 
 from anli.data_processors import AnliExample, mc_examples_to_data_loader
 from anli.run_anli import get_data_processor, model_choice_map

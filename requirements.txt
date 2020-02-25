@@ -17,10 +17,12 @@ ipython
 
 nltk
 
-transformers
+-e git+https://github.com/csbhagav/pytorch-transformers@generative-finetuning#egg=pytorch-transformers
 
 allennlp
 
 torchvision
 
 OpenNMT-py
+
+-e git+ssh://git@github.com/allenai/comet-public.git#egg=comet
