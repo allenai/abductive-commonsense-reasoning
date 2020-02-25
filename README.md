@@ -32,7 +32,7 @@ python anli/demo.py --saved_model_dir models/bert-ft-lr1e-5-batch8-epoch4/ --gpu
 ```
 
 ## [Abductive Inference](anli/README.md)
-## Abductive Generation (Coming soon)
+## [Abductive Generation](anlg/README.md)
 
 # References
 ```
