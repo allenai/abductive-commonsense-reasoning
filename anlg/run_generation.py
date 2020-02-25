@@ -22,7 +22,7 @@ import argparse
 import json
 import logging
 
-import interactive.functions as comet_interactive
+import comet.interactive.functions as comet_interactive
 import numpy as np
 import torch
 import torch.nn.functional as F

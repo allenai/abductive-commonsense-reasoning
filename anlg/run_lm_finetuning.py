@@ -48,7 +48,7 @@ from pytorch_transformers import (WEIGHTS_NAME, AdamW,
 from anlg.models import GPT2CometLMHeadModel
 from anlg.tokenizers import AnliGpt2Tokenizer, AnliCometGpt2Tokenizer
 from utils.file_utils import read_jsonl_lines
-import interactive.functions as comet_interactive
+import comet.interactive.functions as comet_interactive
 
 logger = logging.getLogger(__name__)
 
