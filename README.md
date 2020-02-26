@@ -12,27 +12,20 @@ Public repository associated with [Abductive Commonsense Reasoning, ICLR 2020](h
     ```
    pip install -r requirements.txt
    ```
-3. Download Data
+3. Download Data and Models
     ```
     sh get-data.sh
     ```
+The script will create `data/` and `models/` directories containing subdirectories `anli` and `anlg` for the Abuctive Inference and Generation tasks respectively. 
 
-# Download Trained Model
-```
-wget https://storage.googleapis.com/ai2-mosaic/public/abductive-commonsense-reasoning-iclr2020/models/anli/bert-ft-lr1e-5-batch8-epoch4.tar.gz
-
-mkdir -p models
-
-tar -xvzf bert-ft-lr1e-5-batch8-epoch4.tar.gz -C models/
-```
-
-# Interactive Demo
-```
-python anli/demo.py --saved_model_dir models/bert-ft-lr1e-5-batch8-epoch4/ --gpu_id 0 --interactive
-```
 
 # Tasks
 1. [Abductive Inference](anli/README.md)
+    ### Interactive Demo
+    ```
+    python anli/demo.py --saved_model_dir models/bert-ft-lr1e-5-batch8-epoch4/ --gpu_id 0 --interactive
+    ```
+
 2. [Abductive Generation](anlg/README.md)
 
 # References
