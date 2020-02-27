@@ -16,7 +16,12 @@ Public repository associated with [Abductive Commonsense Reasoning, ICLR 2020](h
     ```
     sh get-data.sh
     ```
-The script will create `data/` and `models/` directories containing subdirectories `anli` and `anlg` for the Abuctive Inference and Generation tasks respectively. 
+   
+The script will create `data/` and `models/` directories containing subdirectories `anli` and `anlg` for the Abuctive Inference and Generation tasks respectively. The size of the data and models is around *12G*. If you'd like to download data:
+
+    wget https://storage.googleapis.com/ai2-mosaic/public/abductive-commonsense-reasoning-iclr2020/anli.zip
+    wget https://storage.googleapis.com/ai2-mosaic/public/abductive-commonsense-reasoning-iclr2020/anlg.zip
+    
 
 
 # Tasks
