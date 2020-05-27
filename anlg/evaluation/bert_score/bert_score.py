@@ -1,4 +1,5 @@
 from bert_score import score
+# Code for BertScore reused from original implementation: https://github.com/Tiiiger/bert_score
 
 class BertScore:
     def __init__(self):
