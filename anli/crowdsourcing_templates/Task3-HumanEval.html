@@ -1,0 +1,758 @@
+      <html>
+        <head>
+            <script type='text/javascript'
+                    src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+            <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet"/>
+
+            <style>
+                body {
+                    font-family: 'Helvetica', 'Arial', sans-serif;
+                    color: #444444;
+                    font-size: 12pt;
+                    background-color: #FAFAFA;
+                }
+
+                mark {
+                    background-color: #cafad5;
+                    color: black;
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                }
+
+                ul {
+                    text-align: left;
+                    list-style-position: inside;
+                }
+
+                textarea {
+                    font-size: 18px;
+                    margin: 0 auto;
+                    display: block;
+                }
+
+                #submitButton {
+                    font-size: 20pt;
+                    color: white;
+                    background-color: green;
+                    border: 2px solid #336600;
+                    padding: 3px;
+                }
+
+                table {
+                    border-spacing: 5px;
+                }
+
+                .Yes {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /*color: white;
+                    background-color: #3333ff;*/
+                }
+
+                .No {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /*color: white;
+                    background-color: #ff3333;*/
+                }
+
+                .coherent{
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /* background-color: #ccd9ff; */
+                }
+
+                .sent_begin {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /* background-color: #ccffff; */
+                }
+
+                .sent_middle {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /* background-color: #d9ffcc; */
+                }
+
+                .sent_end {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /* background-color: #fff2cc; */
+                }
+
+                .sent_rule {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    font-weight: bold;
+                    /*background-color: #ffcccc; */
+                }
+
+                .column_header1 {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    background-color: #b0fac6;
+                }
+
+                .column_header2 {
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    background-color: #fad896;
+                }
+
+                .bb {
+                    border-bottom: 2px dotted black;
+                }
+
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+            </style>
+            <script>
+
+                function init() {
+                    // fixed phrases
+                    var sent_begin  = "Beginning";
+                    var sent_middle = "Middle";
+                    var sent_end    = "Ending";
+                    var sent_rule   = "Commonsense knowledge";
+                    var question = "Which middle sentence is more plausible?";
+
+                    //var question1 = "Is this story <span class='coherent'>coherent</span>?";
+                    //var question2 = "Does <span class='sent_rule'></span> describe a general knowledge that we assume everyone knows?";
+
+                    var nameElements = document.getElementsByTagName("span");
+                    for (var i = 0; i < nameElements.length; i++) {
+                        if (nameElements[i].className == "sent_begin") {
+                            nameElements[i].innerText = sent_begin;
+                        }
+
+                        else if (nameElements[i].className == "sent_middle") {
+                            nameElements[i].innerText = sent_middle;
+                        }
+                        else if (nameElements[i].className == "sent_end") {
+                            nameElements[i].innerText = sent_end;
+                        }
+                        else if (nameElements[i].className == "sent_rule") {
+                            nameElements[i].innerText = sent_rule;
+                        }
+                        else if (nameElements[i].className == "question") {
+                            nameElements[i].innerHTML = question;
+                        }
+                    }
+                }
+
+                function validateNumAnswered() {
+                    var num_examples = 3
+                    var num_stories = 5
+                    if ($('input[type=radio]:checked').length == (num_examples + num_stories)) {
+                        return true;
+                    } else {
+                        for (var i = 1; i < num_stories + 1; i++) {
+                            var q1 = "Answer_radios_Q" + i.toString() + "-1";
+                            var q2 = "Answer_radios_Q" + i.toString() + "-2";
+                            if (!(document.getElementById(q1).checked || document.getElementById(q2).checked)) {
+                                alert("Story #" + i.toString() + " is not answered yet. Please answer all the questions.")
+                                return false;
+                            }
+                        }
+                        return false;
+                    }
+                }
+
+                // TODO
+                // fixed answer for example questions
+                function default1g() {
+                    document.getElementById("radios_eg-1-1").checked = true;
+                }
+
+
+                function default2g() {
+                    document.getElementById("radios_eg-2-0").checked = true;
+                }
+
+
+                function default3g() {
+                    document.getElementById("radios_eg-3-1").checked = true;
+                }
+
+
+                function isValid() {
+                    return validateNumAnswered();
+                    //return validateField("story1") && validateField("why1");
+                }
+
+                function toggle() {
+                    if ((document.getElementById("examples").style.display) == "block") {
+                        document.getElementById("examples").style.display = "none";
+                    }
+                    else {
+                        document.getElementById("examples").style.display = "block";
+                    }
+                }
+
+            </script>
+
+        </head>
+        <body onload="init()">
+        <form name='mturk_form' method='post' id='mturk_form' action='/mturk/externalSubmit'
+              onsubmit="return isValid()">
+            <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
+            <div class="container">
+                <h1 align="center">Which story makes more sense?<br/></h1>
+                <p align="center">Thank you for your participation. Please read the following instructions (and
+                    examples) carefully.</p>
+                <h3 align="left">
+                    <mark>Instructions</mark>
+                </h3>
+                <div style="width:1000px; margin:0 auto;">
+                    <p>You will be presented a
+                        <span class="sent_begin"></span>,
+                        two potential <span class="sent_middle"></span>, and an
+                        <span class="sent_end"></span> of a short story.
+                    </p>
+                    <p></p>
+                    <p>Your task:</p>
+                    <ul>
+                        <li>
+                            Choose the <span class="sent_middle"></span> statement that makes the story coherent / plausible. If both sentences are plausible, pick the one that makes most sense.
+                        </li>
+                    </ul>
+                    <p>Each HIT contains 5 independent stories. When you answer, ignore the other stories.</p>
+                    <p>NOTES:
+                        <u>Some questions are used for quality control purposes such as filtering random guessers.</u>
+                    </p>
+                </div>
+
+                <h3 align="left">
+                    <mark>Examples</mark>
+                    <a href="javascript:toggle();" id="displaytext" style="font-size: 70%;">(<b>hide / show examples</b>)</a>
+                </h3>
+
+                <div id="examples" style="display:block;">
+                    <div style="width:1080px; margin:0 auto;">
+
+                        <h4>
+                            <mark>Example #1</mark>
+                        </h4>
+                        <!--Table-->
+                        <table class="table table-bordered">
+                            <!--Table head-->
+                            <thead>
+                            <tr>
+                                <th class="col-md-3"><span class="sent_begin"></span></th>
+                                <th class="col-md-3"><span class="sent_middle"></span></th>
+                                <th class="col-md-3"><span class="sent_end"></span></th>
+                            </tr>
+                            </thead>
+                            <!--Table head-->
+                            <!--Table body-->
+                            <tbody>
+                            <tr>
+                                <!-- beggining -->
+                                <td rowspan="2" style="vertical-align:middle;">Butch had a really old computer.</td>
+                                <td style="border-bottom:2px dashed gray;">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-1" id="radios_eg-1-1" value="1"
+                                               checked="true" onclick="default1g()">
+                                        <!-- middle 1 -->
+                                        1: Butch decided to order a new computer online.
+                                    </label>
+                                </td>
+
+                                <!-- ending -->
+                                <td rowspan="2" style="vertical-align:middle;">	It arrived and Butch was much happier.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-1" id="radios_eg-1-0" value="0"
+                                               onclick="default1g()">
+                                        <!-- middle 2 -->
+                                        2: Butch noticed that a storm was approaching to his town.
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" bgcolor="#f2f2f2">
+                                    <p>[Explanation] People generally don't feel happy about natural disasters like storms. Therefore, we choose 1 in this case.</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                        <h4>
+                            <mark>Example #2</mark>
+                        </h4>
+                        <!--Table-->
+                        <table class="table table-bordered">
+                            <!--Table head-->
+                            <thead>
+                            <tr>
+                                <th class="col-md-3"><span class="sent_begin"></span></th>
+                                <th class="col-md-3"><span class="sent_middle"></span></th>
+                                <th class="col-md-3"><span class="sent_end"></span></th>
+                            </tr>
+                            </thead>
+                            <!--Table head-->
+                            <!--Table body-->
+                            <tbody>
+                            <tr>
+                                <!-- beggining -->
+                                <td rowspan="2" style="vertical-align:middle;">John was on the trail running.</td>
+                                <td style="border-bottom:2px dashed gray;">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-2" id="radios_eg-2-1" value="1"
+                                               onclick="default2g()">
+                                        <!-- middle 1 -->
+                                        1: John accelerated the speed and broke his leg accidentally.
+                                    </label>
+                                </td>
+
+                                <!-- ending -->
+                                <td rowspan="2" style="vertical-align:middle;">He ran even faster until he got to his car safely.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-2" id="radios_eg-2-0" value="0"
+                                               checked="true" onclick="default2g()">
+                                        <!-- middle 2 -->
+                                        2: John was chased by a bear.
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" bgcolor="#f2f2f2">
+                                    <p>[Explanation] When someone breaks his/her leg, it is difficult to run. Therefore, we choose 2 in this case.</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                        <h4>
+                            <mark>Example #3</mark>
+                        </h4>
+                        <!--Table-->
+                        <table class="table table-bordered">
+                            <!--Table head-->
+                            <thead>
+                            <tr>
+                                <th class="col-md-3"><span class="sent_begin"></span></th>
+                                <th class="col-md-3"><span class="sent_middle"></span></th>
+                                <th class="col-md-3"><span class="sent_end"></span></th>
+                            </tr>
+                            </thead>
+                            <!--Table head-->
+                            <!--Table body-->
+                            <tbody>
+                            <tr>
+                                <!-- beggining -->
+                                <td rowspan="2" style="vertical-align:middle;">
+                                    Gina was putting posters on her bedroom walls.
+                                </td>
+                                <td style="border-bottom:2px dashed gray;">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-3" id="radios_eg-3-1" value="1"
+                                               checked="true" onclick="default3g()">
+                                        <!-- middle 1 -->
+                                        1: Gina wanted to match the colorful posters.
+                                    </label>
+                                </td>
+
+                                <!-- ending -->
+                                <td rowspan="2" style="vertical-align:middle;">
+                                    Gina decided she would wear more colorful clothing.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="radios_eg-3" id="radios_eg-3-0" value="0"
+                                               onclick="default3g()">
+                                        <!-- middle 2 -->
+                                        2: Gina ripped the poster on accident.
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" bgcolor="#f2f2f2">
+                                    <p>[Explanation] In this example, both <span class="sent_middle"></span> sentences sound plausible, but the first one is MORE plausible as a story. Therefore, we choose 1 in this case.</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <hr/>
+
+
+                    </div>
+                    Great! You are now ready to start the following questions! Please note that there are 5 independent
+                    stories. When you answer, ignore the relevance among the stories.
+                </div>
+
+                <hr/>
+
+                <h3 align="left">
+                    <mark>Questions</mark>
+                </h3>
+
+                <div style="width:1080px; margin:0 auto;">
+                    <!-- Question #1 -->
+                    <h4>
+                        <mark>Story #1</mark>
+                    </h4>
+                    <input type='hidden' value="{{ InputStoryidQ1 }}" name='InputStoryidQ1' id='InputStoryidQ1'/>
+                    <input type='hidden' value="{{ endingQ1 }}" name='endingQ1' id='endingQ1'/>
+                    <input type='hidden' value="{{ InputSentence1Q1 }}" name='InputSentence1Q1' id='InputSentence1Q1'/>
+                    <input type='hidden' value="{{ InputSentence2Q1 }}" name='InputSentence2Q1' id='InputSentence2Q1'/>
+                    <input type='hidden' value="{{ InputSentence3Q1 }}" name='InputSentence3Q1' id='InputSentence3Q1'/>
+                    <input type='hidden' value="{{ InputSentence4Q1 }}" name='InputSentence4Q1' id='InputSentence4Q1'/>
+                    <input type='hidden' value="{{ InputSentence5Q1 }}" name='InputSentence5Q1' id='InputSentence5Q1'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz1Q1 }}" name='RandomMiddleSentenceQuiz1Q1' id='RandomMiddleSentenceQuiz1Q1'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz2Q1 }}" name='RandomMiddleSentenceQuiz2Q1' id='RandomMiddleSentenceQuiz2Q1'/>
+                    <input type='hidden' value="{{ CSKQ1 }}" name='CSKQ1' id='CSKQ1'/>
+                    <input type='hidden' value="{{ AnswerRightEndingQ1 }}" name='AnswerRightEndingQ1' id='AnswerRightEndingQ1'/>
+
+
+                     <table class="table table-bordered">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="col-md-3"><span class="sent_begin"></span></th>
+                            <th class="col-md-3"><span class="sent_middle"></span></th>
+                            <th class="col-md-3"><span class="sent_end"></span></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <!-- beggining -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence1Q1 }}
+                            </td>
+                            <td style="border-bottom:2px dashed gray;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q1" id="Answer_radios_Q1-1" value="1">
+                                    <!-- middle 1 -->
+                                    1: {{ RandomMiddleSentenceQuiz1Q1 }}
+                                </label>
+                            </td>
+
+                            <!-- ending -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence5Q1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q1" id="Answer_radios_Q1-2" value="2">
+                                    <!-- middle 2 -->
+                                    2: {{ RandomMiddleSentenceQuiz2Q1 }}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr/>
+                    
+                    <!-- Question #2 -->
+                    <h4>
+                        <mark>Story #2</mark>
+                    </h4>
+                    <input type='hidden' value="{{ InputStoryidQ2 }}" name='InputStoryidQ2' id='InputStoryidQ2'/>
+                    <input type='hidden' value="{{ endingQ2 }}" name='endingQ2' id='endingQ2'/>
+                    <input type='hidden' value="{{ InputSentence1Q2 }}" name='InputSentence1Q2' id='InputSentence1Q2'/>
+                    <input type='hidden' value="{{ InputSentence2Q2 }}" name='InputSentence2Q2' id='InputSentence2Q2'/>
+                    <input type='hidden' value="{{ InputSentence3Q2 }}" name='InputSentence3Q2' id='InputSentence3Q2'/>
+                    <input type='hidden' value="{{ InputSentence4Q2 }}" name='InputSentence4Q2' id='InputSentence4Q2'/>
+                    <input type='hidden' value="{{ InputSentence5Q2 }}" name='InputSentence5Q2' id='InputSentence5Q2'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz1Q2 }}" name='RandomMiddleSentenceQuiz1Q2' id='RandomMiddleSentenceQuiz1Q2'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz2Q2 }}" name='RandomMiddleSentenceQuiz2Q2' id='RandomMiddleSentenceQuiz2Q2'/>
+                    <input type='hidden' value="{{ CSKQ2 }}" name='CSKQ2' id='CSKQ2'/>
+                    <input type='hidden' value="{{ AnswerRightEndingQ2 }}" name='AnswerRightEndingQ2' id='AnswerRightEndingQ2'/>
+
+
+                     <table class="table table-bordered">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="col-md-3"><span class="sent_begin"></span></th>
+                            <th class="col-md-3"><span class="sent_middle"></span></th>
+                            <th class="col-md-3"><span class="sent_end"></span></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <!-- beggining -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence1Q2 }}
+                            </td>
+                            <td style="border-bottom:2px dashed gray;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q2" id="Answer_radios_Q2-1" value="1">
+                                    <!-- middle 1 -->
+                                    1: {{ RandomMiddleSentenceQuiz1Q2 }}
+                                </label>
+                            </td>
+
+                            <!-- ending -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence5Q2 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q2" id="Answer_radios_Q2-2" value="2">
+                                    <!-- middle 2 -->
+                                    2: {{ RandomMiddleSentenceQuiz2Q2 }}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    
+                    <hr/>
+
+                     <!-- Question #3 -->
+                    <h4>
+                        <mark>Story #3</mark>
+                    </h4>
+                    <input type='hidden' value="{{ InputStoryidQ3 }}" name='InputStoryidQ3' id='InputStoryidQ3'/>
+                    <input type='hidden' value="{{ endingQ3 }}" name='endingQ3' id='endingQ3'/>
+                    <input type='hidden' value="{{ InputSentence1Q3 }}" name='InputSentence1Q3' id='InputSentence1Q3'/>
+                    <input type='hidden' value="{{ InputSentence2Q3 }}" name='InputSentence2Q3' id='InputSentence2Q3'/>
+                    <input type='hidden' value="{{ InputSentence3Q3 }}" name='InputSentence3Q3' id='InputSentence3Q3'/>
+                    <input type='hidden' value="{{ InputSentence4Q3 }}" name='InputSentence4Q3' id='InputSentence4Q3'/>
+                    <input type='hidden' value="{{ InputSentence5Q3 }}" name='InputSentence5Q3' id='InputSentence5Q3'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz1Q3 }}" name='RandomMiddleSentenceQuiz1Q3' id='RandomMiddleSentenceQuiz1Q3'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz2Q3 }}" name='RandomMiddleSentenceQuiz2Q3' id='RandomMiddleSentenceQuiz2Q3'/>
+                    <input type='hidden' value="{{ CSKQ3 }}" name='CSKQ3' id='CSKQ3'/>
+                    <input type='hidden' value="{{ AnswerRightEndingQ3 }}" name='AnswerRightEndingQ3' id='AnswerRightEndingQ3'/>
+
+
+                     <table class="table table-bordered">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="col-md-3"><span class="sent_begin"></span></th>
+                            <th class="col-md-3"><span class="sent_middle"></span></th>
+                            <th class="col-md-3"><span class="sent_end"></span></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <!-- beggining -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence1Q3 }}
+                            </td>
+                            <td style="border-bottom:2px dashed gray;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q3" id="Answer_radios_Q3-1" value="1">
+                                    <!-- middle 1 -->
+                                    1: {{ RandomMiddleSentenceQuiz1Q3 }}
+                                </label>
+                            </td>
+
+                            <!-- ending -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence5Q3 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q3" id="Answer_radios_Q3-2" value="2">
+                                    <!-- middle 2 -->
+                                    2: {{ RandomMiddleSentenceQuiz2Q3 }}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    
+                    <hr/>
+                   
+                    <!-- Question #4 -->
+                    <h4>
+                        <mark>Story #4</mark>
+                    </h4>
+                    <input type='hidden' value="{{ InputStoryidQ4 }}" name='InputStoryidQ4' id='InputStoryidQ4'/>
+                    <input type='hidden' value="{{ endingQ4 }}" name='endingQ4' id='endingQ4'/>
+                    <input type='hidden' value="{{ InputSentence1Q4 }}" name='InputSentence1Q4' id='InputSentence1Q4'/>
+                    <input type='hidden' value="{{ InputSentence2Q4 }}" name='InputSentence2Q4' id='InputSentence2Q4'/>
+                    <input type='hidden' value="{{ InputSentence3Q4 }}" name='InputSentence3Q4' id='InputSentence3Q4'/>
+                    <input type='hidden' value="{{ InputSentence4Q4 }}" name='InputSentence4Q4' id='InputSentence4Q4'/>
+                    <input type='hidden' value="{{ InputSentence5Q4 }}" name='InputSentence5Q4' id='InputSentence5Q4'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz1Q4 }}" name='RandomMiddleSentenceQuiz1Q4' id='RandomMiddleSentenceQuiz1Q4'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz2Q4 }}" name='RandomMiddleSentenceQuiz2Q4' id='RandomMiddleSentenceQuiz2Q4'/>
+                    <input type='hidden' value="{{ CSKQ4 }}" name='CSKQ4' id='CSKQ4'/>
+                    <input type='hidden' value="{{ AnswerRightEndingQ4 }}" name='AnswerRightEndingQ4' id='AnswerRightEndingQ4'/>
+
+
+                     <table class="table table-bordered">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="col-md-3"><span class="sent_begin"></span></th>
+                            <th class="col-md-3"><span class="sent_middle"></span></th>
+                            <th class="col-md-3"><span class="sent_end"></span></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <!-- beggining -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence1Q4 }}
+                            </td>
+                            <td style="border-bottom:2px dashed gray;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q4" id="Answer_radios_Q4-1" value="1">
+                                    <!-- middle 1 -->
+                                    1: {{ RandomMiddleSentenceQuiz1Q4 }}
+                                </label>
+                            </td>
+
+                            <!-- ending -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence5Q4 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q4" id="Answer_radios_Q4-2" value="2">
+                                    <!-- middle 2 -->
+                                    2: {{ RandomMiddleSentenceQuiz2Q4 }}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                    
+                    <!-- Question #5 -->
+                    <h4>
+                        <mark>Story #5</mark>
+                    </h4>
+                    <input type='hidden' value="{{ InputStoryidQ5 }}" name='InputStoryidQ5' id='InputStoryidQ5'/>
+                    <input type='hidden' value="{{ endingQ5 }}" name='endingQ5' id='endingQ5'/>
+                    <input type='hidden' value="{{ InputSentence1Q5 }}" name='InputSentence1Q5' id='InputSentence1Q5'/>
+                    <input type='hidden' value="{{ InputSentence2Q5 }}" name='InputSentence2Q5' id='InputSentence2Q5'/>
+                    <input type='hidden' value="{{ InputSentence3Q5 }}" name='InputSentence3Q5' id='InputSentence3Q5'/>
+                    <input type='hidden' value="{{ InputSentence4Q5 }}" name='InputSentence4Q5' id='InputSentence4Q5'/>
+                    <input type='hidden' value="{{ InputSentence5Q5 }}" name='InputSentence5Q5' id='InputSentence5Q5'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz1Q5 }}" name='RandomMiddleSentenceQuiz1Q5' id='RandomMiddleSentenceQuiz1Q5'/>
+                    <input type='hidden' value="{{ RandomMiddleSentenceQuiz2Q5 }}" name='RandomMiddleSentenceQuiz2Q5' id='RandomMiddleSentenceQuiz2Q5'/>
+                    <input type='hidden' value="{{ CSKQ5 }}" name='CSKQ5' id='CSKQ5'/>
+                    <input type='hidden' value="{{ AnswerRightEndingQ5 }}" name='AnswerRightEndingQ5' id='AnswerRightEndingQ5'/>
+
+
+                     <table class="table table-bordered">
+                        <!--Table head-->
+                        <thead>
+                        <tr>
+                            <th class="col-md-3"><span class="sent_begin"></span></th>
+                            <th class="col-md-3"><span class="sent_middle"></span></th>
+                            <th class="col-md-3"><span class="sent_end"></span></th>
+                        </tr>
+                        </thead>
+                        <!--Table head-->
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <!-- beggining -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence1Q5 }}
+                            </td>
+                            <td style="border-bottom:2px dashed gray;">
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q5" id="Answer_radios_Q5-1" value="1">
+                                    <!-- middle 1 -->
+                                    1: {{ RandomMiddleSentenceQuiz1Q5 }}
+                                </label>
+                            </td>
+
+                            <!-- ending -->
+                            <td rowspan="2" style="vertical-align:middle;">
+                                {{ InputSentence5Q5 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="radio-inline">
+                                    <input type="radio" name="Answer_radios_Q5" id="Answer_radios_Q5-2" value="2">
+                                    <!-- middle 2 -->
+                                    2: {{ RandomMiddleSentenceQuiz2Q5 }}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                    
+                    <p><span>Comments and feedback (This is optional. Please leave a comment if you have any questions, find issues, etc.)</span>
+                    </p>
+                    <span><textarea class="form-control" cols="120" name="Comments" rows="5"></textarea></span>
+                    <br/>
+
+                </div>
+            </div>
+
+            <p align="center"><input type='submit' id='submitButton' value='Submit'/></p>
+        </form>
+        <script language='Javascript'>turkSetAssignmentID();</script>
+        </body>
+        </html>

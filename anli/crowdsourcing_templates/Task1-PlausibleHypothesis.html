@@ -1,0 +1,285 @@
+
+		<html>
+		<head>
+			<script type='text/javascript'
+					src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+			<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+			<script>
+
+												$(document).ready(function(){
+												   $('textarea').on("cut copy paste",function(e) {
+													  e.preventDefault();
+													  alert("Pasting copied content is disabled in this field.")
+												   });
+												});
+
+												function validateField(field) {
+													if (field == "story1") {
+														box = 1
+													}
+													if (field == "story2") {
+														box = 3
+													}
+													if (field == "why1") {
+														box = 2
+													}
+													if (field == "why2") {
+														box = 4
+													}
+
+													sentence1 = document.getElementById('sentence1').value
+													sentence2 = document.getElementById('sentence5').value
+
+													input_str = document.getElementById(field).value
+													input_len = input_str.split(' ').length
+
+													if  (input_len < 4) {
+														alert("Please rephrase your input in Box " + box + ". It is too short.")
+														return false;
+													}
+
+													if (sentence1.includes(input_str) || input_str.includes(sentence1)) {
+														alert("Please rephrase your input in Box " + box + ". It has a high overlap with one of the input sentences.")
+														return false;
+													}
+
+													if (sentence2.includes(input_str) || input_str.includes(sentence2)) {
+														alert("Please rephrase your input in Box " + box + ". It has a high overlap with one of the input sentences.")
+														return false;
+													}
+													return true;
+												}
+
+												function isValid(){
+													return validateField("story1") && validateField("why1");
+												}
+
+
+					</script>
+			<style>
+												body {
+													font-family: 'Helvetica', 'Arial', sans-serif;
+													color: #444444;
+													font-size: 12pt;
+													background-color: #FAFAFA;
+												}
+
+												mark {
+													background-color: rgb(153,50,204,0.3);
+													color: black;
+												}
+
+												ul {
+													text-align: left;
+													list-style-position: inside;
+												}
+
+												textarea {
+												font-size: 18px;
+												margin: 0 auto;
+												display: block;
+												}
+
+												#submitButton {
+													font-size:20pt;
+													color:white;
+													background-color:green;
+													border:2px solid #336600;
+													padding:3px;
+												}
+
+											   table {
+												   border-spacing: 5;
+											   }
+
+											   .bb {
+												   border-bottom: 2px dotted black;
+											   }
+
+
+
+
+
+					</style>
+		</head>
+		<body>
+		<form name='mturk_form' method='post' id='mturk_form' action='/mturk/externalSubmit'
+			  onsubmit="return isValid()">
+			<input type='hidden' value='' name='assignmentId' id='assignmentId'/>
+			<h1 align="center">Complete a single unfinished story.<br/></h1>
+			<h3 align="center">
+				<mark>Overview</mark>
+			</h3>
+			<div style="width:1000px; margin:0 auto;">
+				You will be shown an incomplete three-part story. Your task is to complete the story
+				and describe its central message / theme.
+
+			</div>
+
+			<h3 align="center">
+				<mark>Instructions</mark>
+			</h3>
+			<div style="width:1000px; margin:0 auto;">
+				<ol>
+					<li>Review an incomplete three-part story. The beginning and the ending of the story
+						are given.
+					</li>
+					<li>Complete the short story by writing a probable middle of the story that explains why
+						the ending follows after the beginning.
+					</li>
+					<li>Justify your explanation: author a generic central message / <b>rule of thumb</b>
+						that this story conveys. Imagine you are explaining this to a child.
+					</li>
+				</ol>
+			</div>
+			<h3 align="center">
+				<mark>Examples</mark>
+			</h3>
+			<table align="center" width="1200px" style="border: 0.1px solid black;">
+				<colgroup>
+					<col span="1">
+					<col span="1" style="background-color:rgb(0, 255, 128, 0.2)">
+					<col span="1">
+					<col span="1" style="background-color:rgb(0, 255, 128, 0.2)">
+					<col span="1">
+				</colgroup>
+				<tr>
+					<th></th>
+					<th colspan="1">Given</th>
+					<th colspan="1">Expected Annotation</th>
+					<th colspan="1">Given</th>
+					<th colspan="1">Expected Annotation</th>
+				</tr>
+				<tr align="center">
+					<th class="bb"></th>
+					<th class="bb">Beginning</th>
+					<th class="bb"><font color="blue">What happened between the two parts of the story?</font></th>
+					<th class="bb">Ending</th>
+					<th class="bb"> <font color="purple">Central Message / Rule of Thumb</font></th>
+				</tr>
+				<tr>
+					<td rowspan="1">1</td>
+					<td>Helen lived in the state of Washington.</td>
+					<td><font color="blue"><b>Helen planned to drive to Canada but it started snowing
+						heavily.</b></font></td>
+					<td>Helen stayed home instead and planned to go another day.</td>
+					<td><font color="grey"><b>Generally, </b></font><br/><font color="purple">people
+						prefer not to drive in bad weather</font></td>
+				</tr>
+				<tr>
+					<td rowspan="1">2</td>
+					<td class="bb">Helen lived in the state of Washington.</td>
+					<td class="bb"><font color="blue"><b>It was a sunny day and Helen decided to drive to
+						Canada .</b></font></td>
+					<td class="bb">Helen had a wonderful vacation in Canada.</td>
+					<td class="bb"><font color="grey"><b>Generally, </b></font><br/><font color="purple">sunny
+						days are great for driving
+					</font></td>
+				</tr>
+				<tr>
+					<td rowspan="1">3</td>
+					<td>Joyce bought some fruit a week ago.</td>
+					<td><font color="blue"><b>Joyce forgot about it and the fruit became stale.</b></font>
+					</td>
+					<td>Joyce threw the fruit away.</td>
+					<td><font color="grey"><b>Generally, </b></font><br/><font color="purple"> people
+						don't eat stale food.</font></td>
+				</tr>
+				<tr>
+					<td rowspan="1">4</td>
+					<td>Joyce bought some fruit a week ago.</td>
+					<td><font color="blue"><b>Joyce put the fruit in the refrigerator.</b></font></td>
+					<td>Joyce enjoyed eating the fruit.</td>
+					<td><font color="grey"><b>Generally, </b></font><br/><font color="purple">
+						refrigeration preserves fruits</font></td>
+				</tr>
+			</table>
+
+			<h3 align="center">
+				<mark>Tips and Rules</mark>
+			</h3>
+			<div style="width:800px; margin:0 auto;">
+				<ol>
+					<li><u>General</u></li>
+					<ul>
+						<li>Input sentences must be <b>short</b> and have fewer than 10 words.</li>
+						<li>Input sentences must be <b>simple</b>, as if narrating to a child.</li>
+					</ul>
+					<li><u>Authoring the middle</u></li>
+					<ul>
+						<li><font color="red">Avoid</font> introducing any extraneous information.</li>
+						<li>Use <font color="green"><b>names</b></font> instead of <font
+								color="red">pronouns
+						</font>
+							(e.g. he / she) wherever possible.
+						</li>
+					</ul>
+					<li><u>Central Message / Rule of Thumb</u></li>
+					<ul>
+						<li>Must be expressed as a general rule of thumb. <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For
+							example: <font color="purple"><i>people don't like wearing soiled clothes. </i></font>
+						</li>
+					</ul>
+				</ol>
+			</div>
+			<hr/>
+
+			<h3 align="center">
+				<mark>Your Annotation</mark>
+			</h3>
+			<div style="width:1200px; margin:0 auto;">
+
+				<table border="0.1" align="center" width="1200px">
+					<colgroup>
+						<col span="1" style="background-color:rgb(0, 255, 128, 0.2)">
+						<col span="1">
+						<col span="1">
+						<col span="1">
+						<col span="1" style="background-color:rgb(0, 255, 128, 0.2)">
+						<col span="1">
+					</colgroup>
+					<tr align="center">
+						<th>Beginning</th>
+						<th></th>
+						<th width="30%"><font color="blue">1. Describe what happened between the two
+							parts of the story
+							?</font><br><font
+								size="2">to explains why Ending follows the Beginning</font>
+						</th>
+						<th></th>
+						<th>Ending</th>
+						<th><font color="purple">2. Central Message / Rule of Thumb</font><br><font
+								size="2">Generally, ...</font>
+						</th>
+					</tr>
+					<tr>
+						<td>{{ sentence1 }}</td>
+						<td align="center"><font size="100">&rarr;</font></td>
+						<td><textarea name='story1' cols='30' rows='4' id="story1"></textarea></td>
+						<td align="center"><font size="100">&rarr;</font></td>
+						<td>{{ sentence5 }}</td>
+						<td><textarea name='why1' cols='30' rows='4' id="why1"></textarea></td>
+					</tr>
+					<tr>
+				</table>
+
+				<input type='hidden' value='{{ sentence1 }}' name='sentence1'
+					   id='sentence1'/>
+				<input type='hidden' value='{{ sentence2 }}' name='sentence2'
+					   id='sentence2'/>
+				<input type='hidden' value='{{ sentence3 }}' name='sentence3'
+					   id='sentence3'/>
+				<input type='hidden' value='{{ sentence4 }}' name='sentence4'
+					   id='sentence4'/>
+
+				<input type='hidden' value='{{ sentence5 }}' name='sentence5'
+					   id='sentence5'/>
+				<input type='hidden' value='{{ storyid }}' name='storyid' id='storyid'/>
+			</div>
+
+			<p align="center"><input type='submit' id='submitButton' value='Submit'/></p>
+		</form>
+		<script language='Javascript'>turkSetAssignmentID();</script>
+		</body>
+		</html>
