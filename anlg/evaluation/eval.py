@@ -2,6 +2,7 @@ from anlg.evaluation.bleu.bleu import Bleu
 from anlg.evaluation.meteor.meteor_nltk import Meteor
 from anlg.evaluation.rouge.rouge import Rouge
 from anlg.evaluation.cider.cider import Cider
+from anlg.evaluation.bert_score.bert_score import BertScore
 from collections import defaultdict
 from argparse import ArgumentParser
 
@@ -23,7 +24,8 @@ class QGEvalCap:
             (Bleu(4), ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"]),
             (Meteor(),"METEOR"),
             (Rouge(), "ROUGE_L"),
-            (Cider(), "CIDEr")
+            (Cider(), "CIDEr"),
+            (BertScore(), "Bert Score")
         ]
 
         # =================================================
